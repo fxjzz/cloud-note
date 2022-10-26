@@ -8,8 +8,8 @@
             <h3 @click="showRegister">创建账户</h3>
             <transition>
               <div :class="{show: isShowRegister}" class="register">
-                <input type="text" placeholder="用户名" @input="onRegister" v-model="register.username">
-                <input type="password" placeholder="密码" @input="onRegister" v-model="register.password">
+                <input type="text" placeholder="用户名" v-model="register.username">
+                <input type="password" placeholder="密码" v-model="register.password">
                 <p :class={error:register.isError}>{{ register.notice }}</p>
                 <div class="button" @click="onRegister">创建账号</div>
               </div>
@@ -32,10 +32,9 @@
 
 <script>
 import request from "../helpers/request";
-request('/auth')
-  .then(data=>{
-    console.log(data)
-  })
+import Auth from '../apis/auth'
+
+Auth.getInfo().then(data=>console.log(data))
 
 export default {
   name: 'Login',
@@ -79,12 +78,11 @@ export default {
       }
       this.register.isError = false
       this.register.notice = '可用'
-      console.log(`register... username:${this.register.username,this.register.password}`)
-      request('auth/login','POST',{username:this.register.username,password:this.register.password})
-        .then(data=>{
+      console.log(`register... username:${this.register.username, this.register.password}`)
+      Auth.register({username: this.register.username, password: this.register.password})
+        .then(data => {
           console.log(data)
         })
-
     },
     onLogin() {
       if (!/^[\w\u4e00-\u9fa5]{3,15}$/.test(this.login.username)) {
@@ -100,8 +98,8 @@ export default {
       this.login.isError = false
       this.login.notice = ''
       console.log(`login... username:${this.login.username}`)
-      request('auth/login','POST',{username:this.login.username,password:this.login.password})
-        .then(data=>{
+      Auth.login({username: this.login.username, password: this.login.password})
+        .then(data => {
           console.log(data)
         })
     }
@@ -149,6 +147,7 @@ export default {
     width: 270px;
     border-left: 1px solid #ccc;
     overflow: hidden;
+
     h3 {
       padding: 10px 20px;
       font-weight: normal;
@@ -156,6 +155,7 @@ export default {
       border-top: 1px solid #eee;
       cursor: pointer;
       margin-top: -1px;
+
       &:nth-of-type(2) {
         border-bottom: 1px solid #eee;
       }
@@ -179,9 +179,11 @@ export default {
       height: 0;
       overflow: hidden;
       transition: height .4s;
-      &.show{
+
+      &.show {
         height: 193px;
       }
+
       input {
         display: block;
         width: 100%;
