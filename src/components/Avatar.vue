@@ -1,18 +1,20 @@
 <template>
-  <span :title="user.username">{{slug}}</span>
+  <span :title="username">{{ slug }}</span>
 </template>
 
 <script>
-  export default {
-    data() {
-      return {
-        user: {
-          username: 'Valley'
-        },
-        slug: 'V'
-      }
+export default {
+  data() {
+    return {
+      username: 'Valley',
+    }
+  },
+  computed:{
+    slug(){
+      return this.username[0];
     }
   }
+}
 </script>
 
 <style scoped>

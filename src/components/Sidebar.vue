@@ -23,7 +23,12 @@ export default {
   },
   methods: {
     logout() {
-      Auth.logout().then(data=>console.log(data))
+      Auth.logout()
+        .then(data=>{
+          console.log(data)
+          this.$router.push({path:'/login'})
+        })
+
     }
   }
 

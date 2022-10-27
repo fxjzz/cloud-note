@@ -9,9 +9,9 @@ export default function request(url,method='GET',data={}){
     let option={
       url,
       method,
-      // validateStatus(status){
-      //   return (status>=200&&status<300 || status===400)
-      // }
+      validateStatus(status){
+        return (status>=200&&status<300 || status===400)
+      }
     }
     if(method==='GET'){
       option.params=data
