@@ -31,7 +31,6 @@
 </template>
 
 <script>
-import request from "../helpers/request";
 import Auth from '../apis/auth'
 
 Auth.getInfo().then(data=>console.log(data))
