@@ -16,6 +16,7 @@
 
 import avatar from '../components/Avatar.vue'
 import Auth from '../apis/auth'
+import Bus from "../helpers/bus";
 
 export default {
   components: {
@@ -26,6 +27,7 @@ export default {
       Auth.logout()
         .then(data=>{
           console.log(data)
+          Bus.$emit('userInfo',{username:'未登录'})
           this.$router.push({path:'/login'})
         })
 

@@ -32,7 +32,7 @@
 
 <script>
 import Auth from '../apis/auth'
-
+import Bus from '../helpers/bus'
 Auth.getInfo().then(data => console.log(data))
 
 export default {
@@ -81,9 +81,9 @@ export default {
         password: this.register.password
       })
         .then(data => {
-          console.log(data)
           this.register.isError = false
           this.register.notice = '可用'
+          Bus.$emit('userInfo',{username:this.register.username})
           this.$router.push({path: "notebooks"})
         })
         .catch(data=>{
@@ -109,6 +109,7 @@ export default {
         .then(data => {
           this.login.isError = false
           this.login.notice = ''
+          Bus.$emit('userInfo',{username:this.login.username})
           this.$router.push({path: "notebooks"})
         })
         .catch(data => {
