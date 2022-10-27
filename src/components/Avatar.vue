@@ -3,16 +3,26 @@
 </template>
 
 <script>
+import Auth from '../apis/auth'
+
 export default {
   data() {
     return {
-      username: 'Valley',
+      username: '未登录',
     }
   },
-  computed:{
-    slug(){
+  computed: {
+    slug() {
       return this.username[0];
     }
+  },
+  created() {
+    Auth.getInfo()
+      .then(res => {
+        if(res.isLogin){
+          this.username=res.data.username
+        }
+      })
   }
 }
 </script>
