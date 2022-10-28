@@ -1,14 +1,26 @@
 <template>
-  <div id="notebook-list">
-    <h1>{{ msg }}</h1>
-    <ul>
-      <li>
-        <router-link to="/note/1">笔记本1</router-link>
-      </li>
-      <li>
-        <router-link to="/note/2">笔记本2</router-link>
-      </li>
-    </ul>
+  <div class="detail" id="notebook-list">
+    <header>
+      <a href="#" class="btn" ><i class="iconfont icon-plus"></i> 新建笔记本</a>
+    </header>
+    <main>
+      <div class="layout">
+        <h2>笔记本列表(数量)</h2>
+        <div class="book-list">
+          <router-link   to="/note/1" class="notebook">
+            <div>
+              <span class="iconfont icon-notebook"></span>
+              <span>note</span>
+              <span class="action" >编辑</span>
+              <span class="action" >删除</span>
+              <span class="date">2</span>
+            </div>
+          </router-link>
+        </div>
+      </div>
+
+    </main>
+
   </div>
 </template>
 
@@ -26,13 +38,13 @@ export default {
     Auth.getInfo()
       .then(res => {
         if (!res.isLogin) {
-           this.$router.push({path:'/login'})
+          this.$router.push({path: '/login'})
         }
       })
   }
 }
 </script>
 
-<style scoped>
-
+<style lang="less" scoped>
+@import url(../assets/css/notebook-list.less);
 </style>
