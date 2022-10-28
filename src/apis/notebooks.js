@@ -1,4 +1,5 @@
 import request from "../helpers/request";
+import {friendlyDate} from "./util";
 
 const URL = {   //增删改查
   GET: '/notebooks',
@@ -9,7 +10,17 @@ const URL = {   //增删改查
 
 export default {
   getAll() {
-    return request(URL.GET)
+    return new Promise((resolve, reject) => {
+      return request(URL.GET)
+        .then(res => {
+          res.data = res.data.sort((notebook1, notebook2) => notebook1.createdAt < notebook2.createdAt ? 1 : -1)
+          res.data.forEach(n => n.friendlyCreateAt = friendlyDate(n.createdAt))
+          resolve(res)
+        })
+        .catch(err => {
+          reject(err)
+        })
+    })
   },
   addNotebook({title = ''} = {title: ''}) {
     return request(URL.ADD, 'POST', {title})

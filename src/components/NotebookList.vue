@@ -13,7 +13,7 @@
               <span>{{n.noteCounts}}</span>
               <span class="action" @click.stop.prevent="onEdit(n)">编辑</span>
               <span class="action" @click.stop.prevent="onDelete(n)">删除</span>
-              <span class="date">2</span>
+              <span class="date">{{n.friendlyCreateAt}}</span>
             </div>
           </router-link>
         </div>
