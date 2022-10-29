@@ -27,6 +27,7 @@
 <script>
 import Auth from "../apis/auth";
 import Notebooks from '../apis/notebooks'
+import {friendlyDate} from "../apis/util";
 
 export default {
   data() {
@@ -41,6 +42,7 @@ export default {
         .then(res=>{
           alert(res.msg)
           this.notebooks.unshift(res.data)
+          res.data.friendlyCreateAt = friendlyDate(res.data.createdAt)
         })
     },
     onEdit(notebook) {
