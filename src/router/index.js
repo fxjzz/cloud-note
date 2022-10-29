@@ -24,11 +24,11 @@ export default new Router({
       component:NotebookList
     },
     {
-      path:'/note/:noteId',
+      path:'/note',
       component:NoteDetail
     },
     {
-      path:'/trash/:noteId',
+      path:'/trash',
       component:TrashDetail
     }
   ]
