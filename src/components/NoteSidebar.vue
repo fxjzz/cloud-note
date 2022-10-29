@@ -7,7 +7,7 @@
       </span>
       <el-dropdown-menu slot="dropdown">
         <el-dropdown-item :key="notebook.id" v-for="notebook in notebooks" :command="notebook.id">{{notebook.title}}</el-dropdown-item>
-        <el-dropdown-item  command="trash">回收站</el-dropdown-item>
+        <el-dropdown-item  command="trash" divided>回收站</el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
     <div class="menu">
@@ -46,6 +46,7 @@ export default {
         return Notes.getAll({notebookId:this.curBook.id})
       }).then(res=>{
         this.notes=res.data
+        this.$emit('update:notes',this.notes)
     })
   },
 
