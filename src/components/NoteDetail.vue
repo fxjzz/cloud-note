@@ -9,14 +9,16 @@
           <span>更新日期:{{ curNote.updatedAtFriendly }}</span>
           <span>{{ statusText }}</span>
           <span class="iconfont icon-delete" @click="deleteNote"></span>
-          <span class="iconfont icon-fullscreen"></span>
+          <span class="iconfont icon-fullscreen" @click="isShowMD=!isShowMD"></span>
         </div>
         <div class="note-title">
-          <input v-model:value="curNote.title" @keydown="statusText='正在输入...'" @input="updateNote" type="text" placeholder="输入标题">
+          <input v-model:value="curNote.title" @keydown="statusText='正在输入...'" @input="updateNote" type="text"
+                 placeholder="输入标题">
         </div>
         <div class="editor">
-          <textarea v-model:value="curNote.content" @keydown="statusText='正在输入...'" @input="updateNote" placeholder="输入内容, 支持 markdown 语法"></textarea>
-          <div class="preview markdown-body" v-html="" v-show="false"></div>
+          <textarea v-show="!isShowMD" v-model:value="curNote.content" @keydown="statusText='正在输入...'"
+                    @input="updateNote" placeholder="输入内容, 支持 markdown 语法"></textarea>
+          <div class="preview markdown-body" v-html="toggleMD" v-show="isShowMD"></div>
         </div>
       </div>
 
@@ -30,14 +32,22 @@ import NoteSidebar from './NoteSidebar'
 import Bus from "../helpers/bus";
 import _ from 'lodash'
 import Notes from "../apis/notes";
+import MarkdownIt from 'markdown-it'
 
+const md = new MarkdownIt()
 export default {
   components: {NoteSidebar},
   data() {
     return {
       curNote: {},
       notes: [],
-      statusText:'笔记未改动'
+      statusText: '笔记未改动',
+      isShowMD: false
+    }
+  },
+  computed: {
+    toggleMD() {
+      return md.render(this.curNote.content||'')
     }
   },
   created() {
@@ -56,17 +66,17 @@ export default {
       Notes.updateNote({noteId: this.curNote.id}, {
         title: this.curNote.title, content: this.curNote.content
       }).then(data => {
-        this.statusText='笔记已保存'
+        this.statusText = '笔记已保存'
       }).catch(err => {
-        this.statusText='保存出错'
+        this.statusText = '保存出错'
       })
     }, 300),
-    deleteNote(){
-      Notes.deleteNote({noteId:this.curNote.id})
-        .then(data=>{
+    deleteNote() {
+      Notes.deleteNote({noteId: this.curNote.id})
+        .then(data => {
           this.$message.success(data.msg)
-          this.notes.splice(this.notes.indexOf(this.curNote),1)
-          this.$router.replace({path:'/note'})
+          this.notes.splice(this.notes.indexOf(this.curNote), 1)
+          this.$router.replace({path: '/note'})
         })
     }
   },
