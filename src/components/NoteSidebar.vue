@@ -6,7 +6,8 @@
         {{ curBook.title }} <i class="iconfont icon-down"></i>
       </span>
       <el-dropdown-menu slot="dropdown">
-        <el-dropdown-item :key="notebook.id" v-for="notebook in notebooks" :command="notebook.id">{{ notebook.title }}
+        <el-dropdown-item :key="notebook.id" v-for="notebook in notebooks" :command="notebook.id">
+          {{ notebook.title }}
         </el-dropdown-item>
         <el-dropdown-item command="trash" divided>回收站</el-dropdown-item>
       </el-dropdown-menu>
@@ -69,8 +70,8 @@ export default {
     addNote() {
       Notes.addNote({notebookId: this.curBook.id})
         .then(res => {
-          console.log(res)
           this.notes.unshift(res.data)
+          this.$message.success(res.msg)
         })
     }
 
