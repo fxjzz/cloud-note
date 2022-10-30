@@ -1,12 +1,12 @@
 <template>
   <div id="note" class="detail">
-    <note-sidebar @update:notes="val => notes = val"/>
-    <div class="note-detail">
-     <div class="note-empty" v-show="false">请选择笔记</div>
-      <div class="note-detail-ct">
+    <note-sidebar @update:notes="val => this.notes = val"/>
+    <div class="note-detail" >
+      <div class="note-empty" v-show="!curNote.id">请选择笔记</div>
+      <div class="note-detail-ct" v-show="curNote.id">
         <div class="note-bar">
-          <span>创建日期:{{curNote.createdAtFriendly}}</span>
-          <span>更新日期:{{curNote.updatedAtFriendly}}</span>
+          <span>创建日期:{{ curNote.createdAtFriendly }}</span>
+          <span>更新日期:{{ curNote.updatedAtFriendly }}</span>
           <span>已保存</span>
           <span class="iconfont icon-delete"></span>
           <span class="iconfont icon-fullscreen"></span>
@@ -27,13 +27,14 @@
 <script>
 import Auth from "../apis/auth";
 import NoteSidebar from './NoteSidebar'
+import Bus from "../helpers/bus";
+
 export default {
-  name: 'Login',
-  components:{NoteSidebar},
+  components: {NoteSidebar},
   data() {
     return {
-      curNote:{},
-      notes:[]
+      curNote: {},
+      notes: []
     }
   },
   created() {
@@ -43,10 +44,12 @@ export default {
           this.$router.push({path: '/login'})
         }
       })
+    Bus.$once('update:notes', notes => {
+      this.curNote = notes.find(note => note.id == this.$route.query.noteId) || {}
+    })
   },
-  beforeRouteUpdate(to,from,next){
-    this.curNote=this.notes.find(note=>note.id==to.query.noteId)
-    console.log(this.curNote)
+  beforeRouteUpdate(to, from, next) {
+    this.curNote = this.notes.find(note => note.id == to.query.noteId)
     next()
   }
 }
