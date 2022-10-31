@@ -28,14 +28,19 @@
 import Auth from "../apis/auth";
 import Notebooks from '../apis/notebooks'
 import {friendlyDate} from "../helpers/util";
+import {mapActions, mapGetters, mapMutations} from 'vuex'
 
 export default {
   data() {
-    return {
-      notebooks: []
-    }
+    return {}
   },
   methods: {
+    ...mapActions([
+      'getNotebooks',
+      'updateNotebook',
+      'deleteNotebook',
+      'addNotebook'
+    ]),
     onCreate() {
       this.$prompt('笔记本名字', '输入', {
         confirmButtonText: '确定',
@@ -43,11 +48,7 @@ export default {
         inputPattern: /^.{1,30}$/,
         inputErrorMessage: '笔记本名字不能为空，且不能超过30个字'
       }).then(({value}) => {
-        return Notebooks.addNotebook({title: value})  //return
-      }).then(res => {
-        this.$message.success(res.msg)
-        this.notebooks.unshift(res.data)
-        res.data.friendlyCreateAt = friendlyDate(res.data.createdAt)
+        this.addNotebook({title:value})
       })
     },
     onEdit(notebook) {
@@ -56,14 +57,11 @@ export default {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         inputPattern: /^.{1,30}$/,
-        inputValue:notebook.title,
+        inputValue: notebook.title,
         inputErrorMessage: '笔记本名字不能为空，且不能超过30个字'
       }).then(({value}) => {
         title = value
-        return Notebooks.updateNotebook(notebook.id, {title})  //return
-      }).then(res => {
-        this.$message.success(res.msg)
-        notebook.title = title
+        this.updateNotebook({notebookId:notebook.id,title:value})
       })
     },
     onDelete(notebook) {
@@ -72,13 +70,12 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        return Notebooks.deleteNotebook(notebook.id)
+        this.deleteNotebook({notebookId:notebook.id})
       })
-        .then(res => {
-          this.$message.success(res.msg)
-          this.notebooks = this.notebooks.filter(n => n.id !== notebook.id)
-        })
     }
+  },
+  computed: {
+    ...mapGetters(['notebooks'])
   },
   created() {
     Auth.getInfo()
@@ -87,11 +84,7 @@ export default {
           this.$router.push({path: '/login'})
         }
       })
-    Notebooks.getAll()
-      .then(res => {
-        this.notebooks = res.data
-      })
-
+    this.$store.dispatch('getNotebooks')
   }
 }
 </script>
