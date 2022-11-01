@@ -63,7 +63,7 @@ export default {
     ]),
     handleCommand(notebookId) {
       if (notebookId == 'trash') {
-        return this.$router.push({path: '/trash'})
+        return this.$router.push({ path: '/trash'})
       }
       this.$store.commit('setCurBook', {curBookId: notebookId})
       this.getNotes({notebookId})

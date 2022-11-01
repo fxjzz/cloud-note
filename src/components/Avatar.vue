@@ -3,27 +3,22 @@
 </template>
 
 <script>
-import Auth from '../apis/auth'
-import Bus from "../helpers/bus";
+import {mapGetters, mapActions} from "vuex";
+
 export default {
-  data() {
-    return {
-      username: '未登录',
-    }
+  methods: {
+    ...mapActions({
+      setUser: 'checkLogin'
+    })
   },
   computed: {
-    slug() {
-      return this.username[0];
-    }
+    ...mapGetters([
+      'username',
+      'slug'
+    ]),
   },
   created() {
-    Bus.$on('userInfo',(e)=>{this.username=e.username})
-    Auth.getInfo()
-      .then(res => {
-        if(res.isLogin){
-          this.username=res.data.username
-        }
-      })
+    this.setUser({user:this.username})
   }
 }
 </script>

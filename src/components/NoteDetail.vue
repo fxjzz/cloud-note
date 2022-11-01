@@ -27,13 +27,10 @@
 
 </template>
 <script>
-import Auth from "../apis/auth";
 import NoteSidebar from './NoteSidebar'
-import Bus from "../helpers/bus";
 import _ from 'lodash'
-import Notes from "../apis/notes";
 import MarkdownIt from 'markdown-it'
-import {mapState, mapGetters, mapActions, mapMutations} from "vuex";
+import {mapGetters, mapActions, mapMutations} from "vuex";
 
 const md = new MarkdownIt()
 export default {
@@ -54,12 +51,7 @@ export default {
     }
   },
   created() {
-    Auth.getInfo()
-      .then(res => {
-        if (!res.isLogin) {
-          this.$router.push({path: '/login'})
-        }
-      })
+    this.checkLogin({path: '/login'})
   },
   methods: {
     ...mapMutations([
@@ -67,7 +59,8 @@ export default {
     ]),
     ...mapActions([
       'updateNote',
-      'deleteNote'
+      'deleteNote',
+      'checkLogin'
     ]),
     onUpdateNote: _.debounce(function () {
       this.updateNote({noteId: this.curNote.id, title: this.curNote.title, content: this.curNote.content})
@@ -80,7 +73,7 @@ export default {
     onDeleteNote() {
       this.deleteNote({noteId: this.curNote.id})
         .then(data => {
-          this.$router.replace({path: '/note'})
+          this.$router.replace({ path: '/note' })
         })
     }
   },

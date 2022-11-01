@@ -25,19 +25,16 @@
 </template>
 
 <script>
-import Auth from "../apis/auth";
-import {mapActions, mapGetters, mapMutations} from 'vuex'
+import {mapActions, mapGetters} from 'vuex'
 
 export default {
-  data() {
-    return {}
-  },
   methods: {
     ...mapActions([
       'getNotebooks',
       'updateNotebook',
       'deleteNotebook',
-      'addNotebook'
+      'addNotebook',
+      'checkLogin'
     ]),
     onCreate() {
       this.$prompt('笔记本名字', '输入', {
@@ -76,13 +73,8 @@ export default {
     ...mapGetters(['notebooks'])
   },
   created() {
-    Auth.getInfo()
-      .then(res => {
-        if (!res.isLogin) {
-          this.$router.push({path: '/login'})
-        }
-      })
-    this.$store.dispatch('getNotebooks')
+    this.checkLogin({path: '/login'})
+    this.getNotebooks()
   }
 }
 </script>
