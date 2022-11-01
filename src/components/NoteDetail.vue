@@ -47,7 +47,7 @@ export default {
   },
   computed: {
     toggleMD() {
-      return md.render(this.curNote.content||'')
+      return md.render(this.curNote.content || '')
     }
   },
   created() {

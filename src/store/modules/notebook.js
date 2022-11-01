@@ -2,11 +2,17 @@ import Notebooks from "../../apis/notebooks";
 import {Message} from "element-ui";
 
 const state = {
-  notebooks: []
+  notebooks: null,
+  curBookId: null
 }
 
 const getters = {
-  notebooks: state => state.notebooks
+  notebooks: state => state.notebooks || [],
+  curBook: state => {
+    if (!Array.isArray(state.notebooks)) return {}
+    if (!state.curBookId) return state.notebooks[0] || {}
+    return state.notebooks.find(notebook => notebook.id == state.curBookId) || {}
+  }
 }
 
 const mutations = {
@@ -17,39 +23,42 @@ const mutations = {
     state.notebooks.unshift(payload.notebook)
   },
   deleteNotebook(state, payload) {
-    state.notebooks = state.notebooks.filter(n => n.id !== payload.notebookId)
+    state.notebooks = state.notebooks.filter(n => n.id != payload.notebookId)
   },
   updateNotebook(state, payload) {
-    let notebook = state.notebooks.filter(n => n.id === payload.notebookId)[0]
+    let notebook = state.notebooks.filter(n => n.id == payload.notebookId)[0]
     notebook.title = payload.title
+  },
+  setCurBook(state, payload) {
+    state.curBookId = payload.curBookId
   }
 }
 
 const actions = {
   getNotebooks({commit}) {
-    Notebooks.getAll()
-      .then(res =>{
-        commit('setNotebooks',{notebooks:res.data})
+    return Notebooks.getAll()
+      .then(res => {
+        commit('setNotebooks', {notebooks: res.data})
       })
   },
-  addNotebook({commit},payload) {
-    Notebooks.addNotebook({title:payload.title})
-      .then(res=>{
-        commit('addNotebook',{notebook:res.data})
+  addNotebook({commit}, payload) {
+    return Notebooks.addNotebook({title: payload.title})
+      .then(res => {
+        commit('addNotebook', {notebook: res.data})
         Message.success(res.msg)
       })
   },
-  updateNotebook({commit},payload) {
-    Notebooks.updateNotebook(payload.notebookId,{title:payload.title})
-      .then(res=>{
-        commit('updateNotebook',{notebookId:payload.notebookId,title:payload.title})
+  updateNotebook({commit}, payload) {
+    return Notebooks.updateNotebook(payload.notebookId, {title: payload.title})
+      .then(res => {
+        commit('updateNotebook', {notebookId: payload.notebookId, title: payload.title})
         Message.success(res.msg)
       })
   },
-  deleteNotebook({commit},payload){
-    Notebooks.deleteNotebook(payload.notebookId)
-      .then(res=>{
-        commit('deleteNotebook',{notebookId:payload.notebookId})
+  deleteNotebook({commit}, payload) {
+    return Notebooks.deleteNotebook(payload.notebookId)
+      .then(res => {
+        commit('deleteNotebook', {notebookId: payload.notebookId})
         Message.success(res.msg)
       })
   },
