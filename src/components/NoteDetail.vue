@@ -2,7 +2,6 @@
   <div id="note" class="detail">
     <note-sidebar @update:notes="val => this.notes = val"/>
     <div class="note-detail">
-      <div class="note-empty" v-show="!curNote.id">请选择笔记</div>
       <div class="note-detail-ct" v-show="curNote.id">
         <div class="note-bar">
           <span>创建日期:{{ curNote.createdAtFriendly }}</span>
@@ -21,7 +20,6 @@
           <div class="preview markdown-body" v-html="toggleMD" v-show="isShowMD"></div>
         </div>
       </div>
-
     </div>
   </div>
 
@@ -73,7 +71,7 @@ export default {
     onDeleteNote() {
       this.deleteNote({noteId: this.curNote.id})
         .then(data => {
-          this.$router.replace({ path: '/note' })
+          this.$router.replace({path: '/note'})
         })
     }
   },

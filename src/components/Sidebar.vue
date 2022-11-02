@@ -15,8 +15,6 @@
 <script>
 
 import avatar from '../components/Avatar.vue'
-import Auth from '../apis/auth'
-import Bus from "../helpers/bus";
 import {mapActions} from "vuex";
 
 export default {
