@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import {mapState, mapGetters, mapActions, mapMutations} from "vuex";
+import {mapGetters, mapActions, mapMutations} from "vuex";
 
 export default {
   data() {
@@ -65,7 +65,7 @@ export default {
       if (notebookId == 'trash') {
         return this.$router.push({ path: '/trash'})
       }
-      this.$store.commit('setCurBook', {curBookId: notebookId})
+      this.setCurBook({curBookId: notebookId})
       this.getNotes({notebookId})
     },
 

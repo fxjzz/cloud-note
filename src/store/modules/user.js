@@ -1,5 +1,6 @@
 import Auth from "../../apis/auth";
 import router from "../../router";
+import {Message} from "element-ui";
 
 window.router = router
 const state = {
@@ -35,11 +36,17 @@ const actions = {
       .then(res => {
         if (!res.isLogin) {
           console.log('jump')
-          router.push(payload).then(r => {
-          })
+          router.push(payload).then(r => {})
         } else {
           commit('setUser', {user: res.data})
         }
+      })
+  },
+  logout({commit},payload){
+    Auth.logout()
+      .then((res)=>{
+        Message.success(res.msg)
+        router.push(payload)
       })
   }
 }

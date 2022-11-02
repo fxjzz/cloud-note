@@ -31,14 +31,9 @@
 </template>
 
 <script>
-import Auth from '../apis/auth'
-import Bus from '../helpers/bus'
-import {mapGetters, mapActions} from "vuex";
-
-Auth.getInfo().then(data => console.log(data))
+import {mapActions} from "vuex";
 
 export default {
-  name: 'Login',
   data() {
     return {
       isShowRegister: true,
@@ -111,7 +106,7 @@ export default {
       this.loginUser({
         username: this.login.username, password: this.login.password
       })
-        .then(data => {
+        .then(() => {
           this.login.isError = false
           this.login.notice = ''
           this.$router.push({ path: 'notebooks' })

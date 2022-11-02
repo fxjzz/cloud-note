@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
 import Login from "../components/Login";
 import NotebookList from "../components/NotebookList";
 import NoteDetail from "../components/NoteDetail";
@@ -16,8 +15,7 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'HelloWorld',
-      component: HelloWorld
+      component: Login
     },
     {
       path: '/login',
