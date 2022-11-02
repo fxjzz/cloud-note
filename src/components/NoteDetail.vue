@@ -2,7 +2,8 @@
   <div id="note" class="detail">
     <note-sidebar @update:notes="val => this.notes = val"/>
     <div class="note-detail">
-      <div class="note-detail-ct" v-show="curNote.id">
+      <div class="note-empty" v-show="!curBook.id">请创建笔记本后</div>
+      <div class="note-empty" v-show="!curNote.id">选择或创建笔记</div>
         <div class="note-bar">
           <span>创建日期:{{ curNote.createdAtFriendly }}</span>
           <span>更新日期:{{ curNote.updatedAtFriendly }}</span>
@@ -21,7 +22,7 @@
         </div>
       </div>
     </div>
-  </div>
+
 
 </template>
 <script>
@@ -42,7 +43,8 @@ export default {
   computed: {
     ...mapGetters([
       'notebooks',
-      'curNote'
+      'curNote',
+      'curBook'
     ]),
     toggleMD() {
       return md.render(this.curNote.content || '')

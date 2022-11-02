@@ -36,8 +36,8 @@ const mutations = {
 }
 
 const actions = {
-  getTrashNotes({commit}) {
-     Trash.getAll()
+   getTrashNotes({commit}) {
+     return Trash.getAll()
       .then(res => {
         commit('setTrashNotes', {trashNotes: res.data})
       })

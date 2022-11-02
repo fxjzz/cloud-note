@@ -35,7 +35,8 @@ const mutations = {
 }
 
 const actions = {
-  getNotebooks({commit}) {
+  getNotebooks({commit, state}) {
+    if(state.notebooks!=null) return Promise.resolve() //性能优化
     return Notebooks.getAll()
       .then(res => {
         commit('setNotebooks', {notebooks: res.data})

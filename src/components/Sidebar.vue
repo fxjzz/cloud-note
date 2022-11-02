@@ -13,13 +13,18 @@
 </template>
 
 <script>
-
 import avatar from '../components/Avatar.vue'
-import {mapActions} from "vuex";
+import {mapActions,mapGetters} from "vuex";
 
 export default {
   components: {
     avatar
+  },
+  computed:{
+    ...mapGetters([
+      'notebooks',
+      'notes'
+    ]),
   },
   methods: {
     ...mapActions(['logout']),

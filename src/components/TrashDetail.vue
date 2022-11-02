@@ -44,12 +44,8 @@ import { mapGetters, mapMutations, mapActions } from 'vuex'
 let md = new MarkdownIt()
 
 export default {
-  data () {
-    return {}
-  },
 
   created() {
-    this.checkLogin({ path: '/login' })
     this.getNotebooks()
     this.getTrashNotes()
       .then(() => {
@@ -83,7 +79,6 @@ export default {
     ]),
 
     onDelete() {
-      console.log({ noteId: this.curTrashNote.id })
       this.deleteTrashNote({ noteId: this.curTrashNote.id })
     },
 

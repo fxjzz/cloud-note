@@ -31,24 +31,29 @@
 import {mapGetters, mapActions, mapMutations} from "vuex";
 
 export default {
-  data() {
-    return {}
-  },
+
   created() {
     this.getNotebooks()
       .then(() => {
         this.setCurBook({curBookId: this.$route.query.notebookId})
-       // this.$store.commit('setCurBook', {curBookId: this.$route.query.notebookId}) //review
         return this.getNotes({notebookId: this.curBook.id})
       }).then(()=>{
         this.setCurNote({curNoteId:this.$route.query.noteId})
+        this.$router.replace({
+          path:'/note',
+          query:{
+            noteId:this.curNote.id,
+            notebookId:this.curBook.id
+          }
+        })
     })
   },
   computed: {
     ...mapGetters([
       'notebooks',
       'notes',
-      'curBook'
+      'curBook',
+      'curNote'
     ])
   },
   methods: {
@@ -67,6 +72,16 @@ export default {
       }
       this.setCurBook({curBookId: notebookId})
       this.getNotes({notebookId})
+        .then(()=>{
+          this.setCurNote({})
+          this.$router.replace({
+            path:'/note',
+            query:{
+              noteId:this.curNote.id,
+              notebookId:this.curBook.id
+            }
+          })
+        })
     },
 
     onAddNote() {
