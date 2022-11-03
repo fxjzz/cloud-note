@@ -85,16 +85,22 @@ export default {
     ]),
 
     onDelete() {
-      this.deleteTrashNote({ noteId: this.curTrashNote.id })
-        .then(()=>{
-          this.setCurTrashNote({})
-          this.$router.replace({
-            path:'/trash',
-            query:{
-              noteId:this.curTrashNote.id
-            }
+      this.$confirm('删除后将无法恢复', '确认删除？', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(()=>{
+        this.deleteTrashNote({ noteId: this.curTrashNote.id })
+          .then(()=>{
+            this.setCurTrashNote({})
+            this.$router.replace({
+              path:'/trash',
+              query:{
+                noteId:this.curTrashNote.id
+              }
+            })
           })
-        })
+      })
     },
 
     onRevert() {

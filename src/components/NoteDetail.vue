@@ -4,6 +4,7 @@
     <div class="note-detail">
       <div class="note-empty" v-show="!curBook.id">请创建笔记本后</div>
       <div class="note-empty" v-show="!curNote.id">选择或创建笔记</div>
+      <div class="note-detail-ct" v-show="curNote.id">
         <div class="note-bar">
           <span>创建日期:{{ curNote.createdAtFriendly }}</span>
           <span>更新日期:{{ curNote.updatedAtFriendly }}</span>
@@ -22,6 +23,7 @@
         </div>
       </div>
     </div>
+  </div>
 
 </template>
 <script>
@@ -67,17 +69,23 @@ export default {
       })
     }, 3000),
     onDeleteNote() {
-      this.deleteNote({noteId: this.curNote.id})
-        .then(data => {
-          this.setCurNote({})
-          this.$router.replace({
-            path: '/note',
-            query:{
-              noteId:this.curNote.id,
-              notebookId:this.curBook.id
-            }
+      this.$confirm('此笔记将会放入回收站', '删除笔记', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.deleteNote({noteId: this.curNote.id})
+          .then(() => {
+            this.setCurNote({})
+            this.$router.replace({
+              path: '/note',
+              query: {
+                noteId: this.curNote.id,
+                notebookId: this.curBook.id
+              }
+            })
           })
-        })
+      })
     }
   },
   beforeRouteUpdate(to, from, next) {

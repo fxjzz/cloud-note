@@ -72,7 +72,6 @@ export default {
     ...mapGetters(['notebooks'])
   },
   created() {
-    this.checkLogin({path: '/login'})
     this.getNotebooks()
   }
 }
