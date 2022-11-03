@@ -43,7 +43,7 @@ const actions = {
       })
   },
   addNote({commit},{notebookId,title,content}) {
-    return  Note.addNote({notebookId},{title,content})
+    return Note.addNote({notebookId},{title,content})
       .then(res=>{
         commit('addNote',{note:res.data})
         Message.success(res.msg)

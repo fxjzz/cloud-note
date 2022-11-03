@@ -3,7 +3,7 @@
     <div class="note-sidebar">
       <h3 class="notebook-title">回收站</h3>
       <div class="menu">
-        <div>更新时间</div>
+        <div>放入回收站时间</div>
         <div>标题</div>
       </div>
       <ul class="notes">
@@ -50,6 +50,12 @@ export default {
     this.getTrashNotes()
       .then(() => {
         this.setCurTrashNote({ curTrashNoteId: this.$route.query.noteId })
+        this.$router.replace({
+          path:'/trash',
+          query:{
+            noteId:this.curTrashNote.id
+          }
+        })
       })
   },
 
@@ -80,10 +86,28 @@ export default {
 
     onDelete() {
       this.deleteTrashNote({ noteId: this.curTrashNote.id })
+        .then(()=>{
+          this.setCurTrashNote({})
+          this.$router.replace({
+            path:'/trash',
+            query:{
+              noteId:this.curTrashNote.id
+            }
+          })
+        })
     },
 
     onRevert() {
       this.revertTrashNote({ noteId: this.curTrashNote.id })
+        .then(()=>{
+          this.setCurTrashNote({})
+          this.$router.replace({
+            path:'/trash',
+            query:{
+              noteId:this.curTrashNote.id
+            }
+          })
+        })
     }
 
   },

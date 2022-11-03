@@ -24,9 +24,6 @@ const mutations = {
   setTrashNotes(state, payload) {
     state.trashNotes = payload.trashNotes
   },
-  addTrashNote(state, payload) {
-    state.trashNotes.push(payload.note)
-  },
   deleteTrashNote(state, payload) {
     state.trashNotes = state.trashNotes.filter(n => n.id != payload.noteId)
   },
@@ -40,17 +37,18 @@ const actions = {
      return Trash.getAll()
       .then(res => {
         commit('setTrashNotes', {trashNotes: res.data})
+        console.log(res.data)
       })
   },
   deleteTrashNote({commit}, {noteId}) {
-    Trash.deleteNote({noteId})
+    return Trash.deleteNote({noteId})
       .then(res => {
         commit('deleteTrashNote', {noteId})
         Message.success(res.msg)
       })
   },
   revertTrashNote({commit}, {noteId}) {
-    Trash.revertNote({noteId})
+    return Trash.revertNote({noteId})
       .then(res => {
         commit('deleteTrashNote', {noteId})
         Message.success(res.msg)

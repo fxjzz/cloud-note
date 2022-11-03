@@ -23,7 +23,6 @@
       </div>
     </div>
 
-
 </template>
 <script>
 import NoteSidebar from './NoteSidebar'
@@ -50,9 +49,6 @@ export default {
       return md.render(this.curNote.content || '')
     }
   },
-  created() {
-    this.checkLogin({path: '/login'})
-  },
   methods: {
     ...mapMutations([
       'setCurNote'
@@ -69,11 +65,18 @@ export default {
         }).catch(err => {
         this.statusText = '保存出错'
       })
-    }, 300),
+    }, 3000),
     onDeleteNote() {
       this.deleteNote({noteId: this.curNote.id})
         .then(data => {
-          this.$router.replace({path: '/note'})
+          this.setCurNote({})
+          this.$router.replace({
+            path: '/note',
+            query:{
+              noteId:this.curNote.id,
+              notebookId:this.curBook.id
+            }
+          })
         })
     }
   },

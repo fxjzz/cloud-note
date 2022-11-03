@@ -12,7 +12,7 @@ export default {
     return new Promise((resolve, reject) => {
       return request(URL.GET)
         .then(res => {
-          res.data = res.data.sort((note1, note2) => note1.createdAt < note2.createdAt ? 1 : -1)
+          res.data = res.data.sort((note1, note2) => note1.updatedAt < note2.updatedAt ? 1 : -1)
           res.data.forEach(n => {
             n.createdAtFriendly=friendlyDate(n.createdAt)
             n.updatedAtFriendly=friendlyDate(n.updatedAt)

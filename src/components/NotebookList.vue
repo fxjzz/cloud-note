@@ -13,7 +13,7 @@
               <span>笔记数 : {{ n.noteCounts }}</span>
               <span class="action" @click.stop.prevent="onEdit(n)">编辑</span>
               <span class="action" @click.stop.prevent="onDelete(n)">删除</span>
-              <span class="date">创建时间 : {{ n.friendlyCreateAt }}</span>
+              <span class="date">创建时间 : {{ n.createdAtFriendly }}</span>
             </div>
           </router-link>
         </div>
