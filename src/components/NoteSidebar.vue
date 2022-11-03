@@ -29,7 +29,7 @@
 
 <script>
 import {mapGetters, mapActions, mapMutations} from "vuex";
-
+import _ from 'lodash'
 export default {
 
   created() {
@@ -84,7 +84,7 @@ export default {
         })
     },
 
-    onAddNote() {
+    onAddNote:_.throttle(function () {
       this.addNote({notebookId: this.curBook.id})
         .then(()=>{
           this.setCurNote({})
@@ -96,8 +96,7 @@ export default {
             }
           })
         })
-    }
-
+    },1000)
   }
 }
 
